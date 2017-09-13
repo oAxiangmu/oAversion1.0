@@ -17,11 +17,11 @@ var role={
 	isExesit:function (params,callback) {
 		    var sql="";
 		    if(params.name){
-                 sql="select  id from oa_role where name="+params.name+"where is_del=0";
+                 sql="select  id from oa_role where name='"+params.name+"'and is_del=0";
             }else{
-                sql="select  id from oa_role where id="+params.id+"where is_del=0";
+                sql="select  id from oa_role where id="+params.id+" and is_del=0";
             }
-     console.log(params);
+
         connection.query(sql,params,function(err,result){
             callback(err,result);
         });
@@ -32,6 +32,12 @@ var role={
             callback(err,result);
         });
     },
+//角色修改
+    update:function (data,callbak) {
 
+        connection.query("update oa_role  set name=?  where id=?",data,function(err,result){
+            callback(err,result);
+        });
+    }
 }
 module.exports = role;
