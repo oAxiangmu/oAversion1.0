@@ -1,30 +1,31 @@
 var express = require('express');
 var router = express.Router();
-var roleDao = require("../model/roleDao.js");
+var dutyDao = require("../model/dutyDao.js");
 
 
-//角色创建
+//职位创建
 router.post("/add", function (req, res, next) {
     var data = {};//返回的数据
     var params={};
     name = req.body.name;
-    params.name=name;
+    no=req.body.no;
+    params.no=no;
 
 
-    roleDao.isExesit(params, function (error, rows) {
+    dutyDao.isExesit(params, function (error, rows) {
 
         if (rows.length>0) {
             data.result = 0;
             data.message = {
-                res:"角色创建失败'",
-               detail:"角色已经存在",
+                res:"职位创建失败'",
+               detail:"编号已经存在",
         };
             data.data=null;
             res.json(data);
             return;
 
         }else{
-            roleDao.add(name, function (error, result) {
+            dutyDao.add([name,no],function (error, result) {
 
                 if (error) {
                     data.result = 0;
@@ -55,7 +56,7 @@ router.get("/delet/:id", function (req, res, next) {
     var data={};
     param.id=id;
 
-  roleDao.isExesit(param,function (error,result) {
+    dutyDao.isExesit(param,function (error,result) {
         if(error){
 
             data.result=1;
@@ -67,18 +68,18 @@ router.get("/delet/:id", function (req, res, next) {
             res.json(data);
             return;
         }
-        if(result.length<=0){
+        if(!result.length){
             data.result=1;
             data.message={
                 result:"删除失败！",
-                detail:"角色不存在"
+                detail:"职位不存在"
             };
             data.data=null;
             res.json(data);
             return;
 
         }
-        roleDao.delet(id,function (error,result) {
+        dutyDao.delet(id,function (error,result) {
             if(error){
 
                 data.result=1;
@@ -112,11 +113,11 @@ router.get("/list/:page",function (req,res,next) {
    var page= req.params.page||1;
    var start=(page-1)*pageSize;
    params=[start,pageSize];
-   roleDao.list(params,function (error,result) {
+    dutyDao.list(params,function (error,result) {
        if(error){
              data.result=0;
              data.message= {
-                 res: "角色查询失败",
+                 res: "职位查询失败",
                  detail: error,
        };
              data.data=null;
@@ -135,16 +136,17 @@ router.get("/list/:page",function (req,res,next) {
    })
 });
 
-//角色修改
+//职位修改
 
 router.post("/update", function (req, res, next) {
     var param={};
     var id=req.body.id;
     var name=req.body.name;
+    var no=req.body.no;
     var data={};
     param.id=id;
 
-    roleDao.isExesit(param,function (error,result) {
+    dutyDao.isExesit(param,function (error,result) {
         if(error){
 
             data.result=1;
@@ -167,7 +169,7 @@ router.post("/update", function (req, res, next) {
             return;
 
         }
-        roleDao.update([name,id],function (error,result) {
+        roleDao.update([name,no,id],function (error,result) {
             if(error){
                 data.result=1;
                 data.message={

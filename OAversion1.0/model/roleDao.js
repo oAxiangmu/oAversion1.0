@@ -1,14 +1,14 @@
-var connection=require("./connection.js");
+var query=require("./connection.js");
 var role={
     //角色查找
        list:function (data,callback) {
-           connection.query("select * from oa_role where is_del=0  limit  ?,? ", data, function (err, rows) {
+         query("select * from oa_role where is_del=0  limit  ?,? ", data, function (err, rows) {
                callback(err, rows);
            });
        },
 	//数据添加
 		add:function(data,callback){
-			connection.query("insert into oa_role (name,creat_time) values(?,now())",data,function(err,result){
+		   query("insert into oa_role (name,creat_time) values(?,now())",data,function(err,result){
 				callback(err,result);
 			});
 
@@ -22,20 +22,20 @@ var role={
                 sql="select  id from oa_role where id="+params.id+" and is_del=0";
             }
 
-        connection.query(sql,params,function(err,result){
+        query(sql,params,function(err,result){
             callback(err,result);
         });
     },
     //角色删除
     delet:function (data,callback) {
-        connection.query("update oa_role  set is_del=1 where id=?",data,function(err,result){
+          query("update oa_role  set is_del=1 where id=?",data,function(err,result){
             callback(err,result);
         });
     },
 //角色修改
     update:function (data,callbak) {
 
-        connection.query("update oa_role  set name=?  where id=?",data,function(err,result){
+          query("update oa_role  set name=?  where id=?",data,function(err,result){
             callback(err,result);
         });
     }

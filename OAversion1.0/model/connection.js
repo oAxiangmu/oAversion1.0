@@ -1,23 +1,27 @@
-var mysql  = require('mysql');  //调用MySQL模块
-
-//创建一个connection
-var connection = mysql.createConnection({    
-
-    host     : '127.0.0.1',       //主机
-    user     : 'root',            //MySQL认证用户名
-    password:'12345678',
-    port:   '3306',
-    database: 'oa'
-
+var mysql=require("mysql");
+//创建连接池
+var pool = mysql.createPool({
+    host: 'localhost',
+    user: 'root',
+    password: '12345678',
+    database: 'oa',
+    port: 3306
 });
 
-//创建一个connection
-connection.connect(function(err){
+var query=function(sql,data,callback){
+    pool.getConnection(function(err,conn){
+        if(err){
+            callback(err,null,null);
+        }else{
+            conn.query(sql,data,function(qerr,vals,fields){
+                //释放连接
+                conn.release();
+                //事件驱动回调
+                callback(qerr,vals,fields);
+            });
+        }
+    });
+};
 
-    if(err){       
-        return;
+module.exports=query;
 
-    }
-
-}); 
-module.exports =connection;
