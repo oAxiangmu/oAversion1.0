@@ -8,6 +8,7 @@ var index = require('./routes/index');
 var users = require('./routes/users');
 var role=require("./routes/role");
 var news=require("./routes/news");
+var category=require("./routes/category");
 
 var app = express();
 //跨域访问设置
@@ -36,6 +37,7 @@ app.use('/', index);
 app.use('/users', users);
 app.use("/role",role);
 app.use("/news",news);
+app.use("/category",category);
 
 
 
