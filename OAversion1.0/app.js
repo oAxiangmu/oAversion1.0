@@ -14,10 +14,11 @@ var logger=require("./routes/logger");
 var leave=require("./routes/leave");
 var department=require("./routes/department");
 var operation=require("./routes/operation");
+var bulletin=require("./routes/bulletin");
 
 var app = express();
 //跨域访问设置
-app.all('/test', function(req, res, next) {
+app.all('/*', function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
     res.header("Access-Control-Allow-Headers", "X-Requested-With");
@@ -46,6 +47,7 @@ app.use("/logger",logger);
 app.use("/leave",leave);
 app.use("/department",department);
 app.use("/operation",operation);
+app.use("/bulletin",bulletin);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
