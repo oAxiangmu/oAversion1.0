@@ -3,6 +3,8 @@ var router = express.Router();
 var departmentDao = require("../model/departmentDao.js");
 
 
+
+
 //角色创建
 router.post("/add", function (req, res, next) {
     var data = {};//返回的数据
