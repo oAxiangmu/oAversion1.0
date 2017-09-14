@@ -17,6 +17,8 @@ var operation=require("./routes/operation");
 
 
 
+
+
 var app = express();
 //跨域访问设置
 app.all('/test', function(req, res, next) {
@@ -48,6 +50,9 @@ app.use("/logger",logger);
 app.use("/leave",leave);
 app.use("/department",department);
 app.use("/operation",operation);
+
+
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
