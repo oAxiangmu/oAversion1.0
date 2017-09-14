@@ -28,7 +28,7 @@ var role={
     },
     //角色删除
     delet:function (data,callback) {
-          query("update oa_role  set is_del=1 where id=?",data,function(err,result){
+          query("delet from oa_role  where id=?",data,function(err,result){
             callback(err,result);
         });
     },
