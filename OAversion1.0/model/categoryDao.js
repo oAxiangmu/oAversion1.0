@@ -4,8 +4,7 @@ var category = {
     add: function (data, callback) {
 
         query("insert into oa_news_category (p_id,name) values(?,?)", data, function (err, result) {
-            console.log(err);
-            console.log(result);
+
             callback(err, result);
         });
 
@@ -19,8 +18,7 @@ var category = {
             sql = "select id from oa_news_category  where id=" + params.id + " and is_del=0";
         }
         query(sql, params, function (err, result) {
-            console.log(err);
-            console.log(result);
+
             callback(err, result);
         });
     },

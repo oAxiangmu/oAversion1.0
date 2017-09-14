@@ -12,7 +12,8 @@ var category=require("./routes/category");
 var duty=require("./routes/duty");
 var logger=require("./routes/logger");
 var leave=require("./routes/leave");
-var deparment=require("./routes/department");
+var department=require("./routes/department");
+var operation=require("./routes/operation");
 
 var app = express();
 //跨域访问设置
@@ -43,7 +44,8 @@ app.use("/category",category);
 app.use("/duty",duty);
 app.use("/logger",logger);
 app.use("/leave",leave);
-app.use("/department",deparment);
+app.use("/department",department);
+app.use("/operation",operation);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

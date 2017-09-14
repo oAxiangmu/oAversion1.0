@@ -35,7 +35,7 @@ var department={
 //部门修改
     update:function (data,callbak) {
 
-        query("update oa_department  set name=?,no=?, pid=? ,remark=?,short=?  where id=?",data,function(err,result){
+        query("update oa_department  set name=?,no=?, p_id=? ,remark=?,short=?  where id=?",data,function(err,result){
             callback(err,result);
         });
     }
