@@ -17,6 +17,7 @@ var conference= {
             }
         });
 
+
     },
 
     //发布会议
