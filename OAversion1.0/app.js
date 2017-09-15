@@ -15,7 +15,7 @@ var leave=require("./routes/leave");
 var department=require("./routes/department");
 var operation=require("./routes/operation");
 var bulletin=require("./routes/bulletin");
-var conference=require("./routes/conference");
+//var conference=require("./routes/conference");
 
 var app = express();
 //跨域访问设置
@@ -49,7 +49,7 @@ app.use("/leave",leave);
 app.use("/department",department);
 app.use("/operation",operation);
 app.use("/bulletin",bulletin);
-app.use("/conference",conference);
+//app.use("/conference",conference);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

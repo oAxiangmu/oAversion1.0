@@ -62,7 +62,7 @@ var logger= {
         if(data.recId){
             sql="select * from loggers_list where rec_id="+data.recId+" is_del=0 limit ?,?"
         }
-        sql="select * from loggers_list where  is_del=0 limit ?,?"
+          sql="select * from loggers_list where  is_del=0 limit ?,?"
 
         query(function (err,conn) {
             if(err){
@@ -86,6 +86,7 @@ var logger= {
                 callback(err,null,null);
             }else{
                 conn.query(sql,data,function(err,result){
+                    console.log(result);
                     //释放连接
                     conn.release();
                     //事件驱动回调

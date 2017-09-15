@@ -134,8 +134,6 @@ router.get("/list/:page",function (req,res,next) {
 router.get("/view/:id",function (req,res,next) {
 
     var data={};
-    var params=[];
-    var pageSize=10;
     var id= req.params.id;
 
 
