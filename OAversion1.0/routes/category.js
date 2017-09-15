@@ -72,7 +72,7 @@ router.get("/delet/:id", function (req, res, next) {
             res.json(data);
             return;
         }
-        if(!result.length){
+        if(result.length<=0){
             data.result=1;
             data.message={
                 result:"删除失败！",
