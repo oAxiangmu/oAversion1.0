@@ -3,18 +3,19 @@ var router = express.Router();
 var conferenceDao = require("../model/conferenceDao.js");
 
 
-//角色创建
+//会议创建
 router.post("/add", function (req, res, next) {
     var data = {};//返回的数据
-    var params={};
+
     title = req.body.title;
     content=req.body.content;
     pusherId=req.body.pusherId;
-    adress=req.body.adress;
+    uId=req.body.uId;
+    address=req.body.address;
     start=req.body.start;
     end=req.body.end;
     
-    conferenceDao.add([title,content,pusherId,adress,start,end], function (error, result) {
+    conferenceDao.add([title,content,pusherId,address,start,end,uId], function (error, result) {
 
         if (error) {
             data.result = 0;
@@ -36,103 +37,123 @@ router.post("/add", function (req, res, next) {
     
     })
 });
-
-
-
-//角色删除
+//会议删除
 router.get("/delet/:id", function (req, res, next) {
     var id=req.params.id;
     var data={};
-    conferenceDao.delet(id,function (error,result) {
-          if(error){
-            data.result=0;
+    conferenceDao.isExesit(id,function (error,result) {
+        if(error){
+
+            data.result=1;
             data.message={
-                result:"会议删除失败",
+                result:"删除失败！",
                 detail:error,
-            }
-            res.json(data);
-          }
-          data.result=1;
-          data.message={
-              res:"会议删除成功",
-              detail:""
-          };
-          data.data=null;
-          res.json(data);
-    })
-});
-
-
-
-//修改角色
-router.post("/update/:id",function (req, res) {
-	
-	    var data={};
-	    var params={};
-	    title = req.body.title;
-	    content=req.body.content;
-	    pusherId=req.body.pusherId;
-	    adress=req.body.adress;
-	    start=req.body.start;
-	    end=req.body.end;
-	    id=req.body.id;
-	    
-	    conferenceDao.update([title,content,pusherId,adress,start,end,id], function (error, result) {
-
-        if (error) {
-            data.result = 0;
-            data.message = {result: "会议修改失败", detail: error};
-            data.data = null;
-          
-            res.json(data);
-            return
-        } else {
-            data.result = 1;
-            data.message = {
-                result:"会议修改成功",
-                detail:"",
             };
-            data.data = null;
-            
+            data.data=null;
+            res.json(data);
+            return;
         }
-        res.json(data);
+        if(!result.length){
+            data.result=1;
+            data.message={
+                result:"删除失败！",
+                detail:"会议不存在"
+            };
+            data.data=null;
+            res.json(data);
+            return;
+
+        }
+        conferenceDao.delet(id,function (error,result) {
+            if(error){
+
+                data.result=1;
+                data.message={
+                    result:"删除失败！",
+                    detail:error,
+                };
+                data.data=null;
+                res.json(data);
+                return;
+            }
+
+            data.result=1;
+            data.message={
+                result:"删除成功！",
+                detail:""
+            };
+            data.data=null;
+            res.json(data);
+
+
+        })
+
+
 
     })
 
+
+
 });
+//会议列表
 
-
-
-//查找角色
 router.get("/list/:page",function (req,res,next) {
 
     var data={};
-    var params=[];
-    var pageSize=10;
-   var page= req.params.page||1;
-   var start=(page-1)*pageSize;
-   params=[start,pageSize];
-   conferenceDao.list(params,function (error,result) {
-       if(error){
-             data.result=0;
-             data.message= {
-                 res: "会议查询失败",
-                 detail: error,
-       };
-           res.json(error);
-           return;
-       }
+    pageSize=10;
+    var page= req.params.page||1;
+    start=(page-1)*  pageSize;
 
-       data.result=1;
-       data.message={
-           res:"会议查询成功",
-           detail:"data",
-       }
-       data.data=result;
-       res.json(data);
+    conferenceDao.list([start,pageSize],function (error,result) {
+        if(error){
+            data.result=0;
+            data.message= {
+                res: "会议查询失败",
+                detail: error,
+            };
+            data.data=null;
+            res.json(data);
+            return
+        }
 
-   })
+        data.result=1;
+        data.message={
+            res:"会议查询成功",
+            detail:"",
+        }
+        data.data=result;
+        res.json(data);
+
+    })
 });
+//查看会议
+var data={};
+var id= req.params.id;
+
+
+conferenceDao.view(id,function (error,result) {
+    if(error){
+        data.result=0;
+        data.message= {
+            res: "日志查询失败",
+            detail: error,
+        };
+        data.data=null;
+        res.json(data);
+        return
+    }
+
+    data.result=1;
+    data.message={
+        res:"日志查询成功",
+        detail:"",
+    }
+    data.data=result;
+    res.json(data);
+
+})
+
+
 
 
 module.exports = router;
