@@ -127,31 +127,34 @@ router.get("/list/:page",function (req,res,next) {
     })
 });
 //查看会议
-var data={};
-var id= req.params.id;
 
 
-conferenceDao.view(id,function (error,result) {
-    if(error){
-        data.result=0;
-        data.message= {
-            res: "日志查询失败",
-            detail: error,
-        };
-        data.data=null;
+router.get("/view/:id",function (req,res,next) {
+    var data = {};
+    var id = req.params.id;
+    conferenceDao.view(id, function (error, result) {
+
+        if (error) {
+            data.result = 0;
+            data.message = {
+                res: "会议查询失败",
+                detail: error,
+            };
+            data.data = null;
+            res.json(data);
+            return
+        }
+
+        data.result = 1;
+        data.message = {
+            res: "会议查询成功",
+            detail: "",
+        }
+        data.data = result;
         res.json(data);
-        return
-    }
 
-    data.result=1;
-    data.message={
-        res:"日志查询成功",
-        detail:"",
-    }
-    data.data=result;
-    res.json(data);
-
-})
+    })
+});
 
 
 

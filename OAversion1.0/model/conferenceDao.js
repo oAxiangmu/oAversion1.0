@@ -78,37 +78,35 @@ var conference= {
     },
     //查看会议
     view:function (data,callback) {
-        var tasks = [function(bc) {
-            connection.beginTransaction(function(err) {
-                bc(err);
-            });
-        }, function(bc) {
-            var sql="select * from oa_conference where id=?"
-            connection.query(sql, data, function(err, result) {
-                bc(err, result[0].u_id); // 查到的uId会传给下一个任务
-            });
-        }, function(uId, bc) {
+            var sql1="select * from oa_conference where is_del=0 and id=?";
+        query(function (err,conn) {
+            if(err){
+                callback(err,null,null);
+            }else{
+                conn.query(sql1, data,function(err,result){
+                    console.log(result)
+                    if(err){
+                        console.log(err);
+                    }
 
+                    var sql2="select name from oa_user where id in ("+result[0].u_id+")";
+                   conn.query(sql2,function (err,result2) {
+                       //释放连接
+                       conn.release();
+                       //事件驱动回调
+                        result[0].joinName=[];
+                       for(var i=0 ;i<result2.length;i++){
+                           result[0].joinName.push(result2[i].name);
+                       }
+                       console.log(result);
+                       callback(err,result);
+                   })
 
-            connection.query('select name from oa_user where id in (?) ', uId, function(err, result) {
-                bc(err);
-            });
-        }, function(bc) {
-            connection.commit(function(err) {
-                bc(err);
-            });
-        }];
-
-        async.waterfall(tasks, function(err, results) {
-            if(err) {
-                console.log(err);
-                connection.rollback(); // 发生错误事务回滚
+                });
             }
-            callback(err,results);
         });
-        
-    }
 
+    }
 
 
 };
