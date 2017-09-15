@@ -13,7 +13,7 @@ router.post("/add", function (req, res, next) {
     adress=req.body.adress;
     start=req.body.start;
     end=req.body.end;
-    
+
     conferenceDao.add([title,content,pusherId,adress,start,end], function (error, result) {
 
         if (error) {
@@ -30,13 +30,12 @@ router.post("/add", function (req, res, next) {
                 detail:"",
             };
             data.data = null;
-            
+
         }
         res.json(data);
-    
+
     })
 });
-
 
 
 //角色删除
@@ -66,7 +65,7 @@ router.get("/delet/:id", function (req, res, next) {
 
 //修改角色
 router.post("/update/:id",function (req, res) {
-	
+
 	    var data={};
 	    var params={};
 	    title = req.body.title;
@@ -76,14 +75,14 @@ router.post("/update/:id",function (req, res) {
 	    start=req.body.start;
 	    end=req.body.end;
 	    id=req.body.id;
-	    
+
 	    conferenceDao.update([title,content,pusherId,adress,start,end,id], function (error, result) {
 
         if (error) {
             data.result = 0;
             data.message = {result: "会议修改失败", detail: error};
             data.data = null;
-          
+
             res.json(data);
             return
         } else {
@@ -93,7 +92,7 @@ router.post("/update/:id",function (req, res) {
                 detail:"",
             };
             data.data = null;
-            
+
         }
         res.json(data);
 

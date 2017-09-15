@@ -10,11 +10,10 @@ var pool = mysql.createPool({
 
 var query=function(callback){
     pool.getConnection(function(err,conn){
-                    callback(err,conn);
+        callback(err,conn);
     });
 };
 
 
 
 module.exports=query;
-
