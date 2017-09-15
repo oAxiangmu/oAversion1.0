@@ -1,7 +1,6 @@
 var connection=require("./connection.js");
 var conference={
 
-	
 	//数据添加
 	add:function(data,callback){
 		
@@ -10,8 +9,7 @@ var conference={
 		})
 	},
 	
-	
-	
+
 	isExesit:function (params,callback) {
 	    var sql="";
 	    if(params.name){
