@@ -128,7 +128,7 @@ router.get("/list/:page",function (req,res,next) {
 });
 //查看会议
 var data={};
-var id= req.params.id;
+//var id= req.params.id;
 
 
 conferenceDao.view(id,function (error,result) {
