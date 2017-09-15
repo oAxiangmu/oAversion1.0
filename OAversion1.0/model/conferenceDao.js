@@ -14,6 +14,7 @@ var conference= {
                     conn.release();
                     //事件驱动回调
                     callback(err,result);
+
                 });
             }
         });
