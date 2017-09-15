@@ -1,60 +1,42 @@
-var connection=require("./connection.js");
-var conference={
-
-	
-	//数据添加
-	add:function(data,callback){
-		
-		connection.query("insert into oa_conference (title,content,pusher_id,adress,start,end,push_time) values(?,?,?,?,?,?,now())",data,function(err,result){
-			callback(err,result);
-		})
-	},
-	
-	
-	
-	isExesit:function (params,callback) {
-	    var sql="";
-	    if(params.name){
-            sql="select  id from oa_conference where id="+params.id;
-        }
-
-	    connection.query(sql,params,function(err,result){
-	    	callback(err,result);
-    	})
-	},
-	
-	//角色删除
-    delet:function (data,callback) {
-        connection.query("delete  from  oa_conference where id=? ",data,function(err,result){
+var query=require("./connection.js");
+var conference= {
+    //判断会议是否已经存在
+    isExesit:function (params,callback) {
+        var sql="select  id from oa_bulletin  where id ="+params+" and is_del=0";
+        query(sql,function(err,result){
             callback(err,result);
         });
     },
 
-	
-	
-    //修改角色
-  	update:function(data,callback){
-  		connection.query( "update oa_conference set title = ?,content=?,pusher_id=?,adress=?,start=?,end=? where id=?",data,function(err,result){
-  	        callback(err,result);
-  	    });	
-  	 },
-  	 
-  	 //角色查找
-     list:function (data,callback) {
-         connection.query("select * from oa_conference where is_del=0  limit  ?,? ", data, function (err, rows) {
-             callback(err, rows);
-         });
-  	},
-  	 
+    //发布会议
+    add:function(data,callback){
+        query("insert into oa_bulletin (title,content,pusher_id,push_time) values(?,?,?,now())",data,function(err,result){
 
-};	
-module.exports = conference;
+            callback(err,result);
+        });
+    },
+    //公告删除
+    delet:function (data,callback) {
+        query("update  oa_bulletin  set is_del=1 where id=?",data,function (error,result) {
+            callback(error,result);
+        })
+    },
+    //公告列表
+    list:function(data,callback){
+        query("select b.title, b.content, b.push_time,  u.name  pusher from oa_bulletin b  left join  oa_user  u  on b.pusher_id=u.id   where b.is_del=0  limit  ?,?  ", data, function (err, rows) {
+            callback(err, rows);
+        });
+    },
+//查看公告
+    view:function (data,callback) {
+        query("select b.title, b.content, b.push_time,  u.name  pusher from oa_bulletin b  left join  oa_user  u  on b.pusher_id=u.id   where b.is_del=0  and id=?  ", data, function (err, rows) {
+            callback(err, rows);
+        });
+
+    }
 
 
 
+};
 
-
-
-
-
-
+module.exports = bulletin;

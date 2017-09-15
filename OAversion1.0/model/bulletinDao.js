@@ -4,35 +4,82 @@ var bulletin= {
     isExesit:function (params,callback) {
 
             var sql="select  id from oa_bulletin  where id ="+params+" and is_del=0";
-
-            query(sql,function(err,result){
-            callback(err,result);
+        query(function (err,conn) {
+            if(err){
+                callback(err,null,null);
+            }else{
+                conn.query(sql,function(err,result){
+                    //释放连接
+                    conn.release();
+                    //事件驱动回调
+                    callback(err,result);
+                });
+            }
         });
     },
 
     //增加公告
      add:function(data,callback){
-            query("insert into oa_bulletin (title,content,pusher_id,push_time) values(?,?,?,now())",data,function(err,result){
-
-             callback(err,result);
+        var sql="insert into oa_bulletin (title,content,pusher_id,push_time) values(?,?,?,now())";
+         query(function (err,conn) {
+             if(err){
+                 callback(err,null,null);
+             }else{
+                 conn.query(sql,data,function(err,result){
+                     //释放连接
+                     conn.release();
+                     //事件驱动回调
+                     callback(err,result);
+                 });
+             }
          });
     },
     //公告删除
     delet:function (data,callback) {
-          query("update  oa_bulletin  set is_del=1 where id=?",data,function (error,result) {
-            callback(error,result);
-        })
+         var sql="update  oa_bulletin  set is_del=1 where id=?";
+        query(function (err,conn) {
+            if(err){
+                callback(err,null,null);
+            }else{
+                conn.query(sql,data,function(err,result){
+                    //释放连接
+                    conn.release();
+                    //事件驱动回调
+                    callback(err,result);
+                });
+            }
+        });
     },
     //公告列表
     list:function(data,callback){
-           query("select b.title, b.content, b.push_time,  u.name  pusher from oa_bulletin b  left join  oa_user  u  on b.pusher_id=u.id   where b.is_del=0  limit  ?,?  ", data, function (err, rows) {
-            callback(err, rows);
+         var sql="select b.title, b.content, b.push_time,  u.name  pusher from oa_bulletin b  left join  oa_user  u  on b.pusher_id=u.id   where b.is_del=0  limit  ?,?  ";
+        query(function (err,conn) {
+            if(err){
+                callback(err,null,null);
+            }else{
+                conn.query(sql,data,function(err,result){
+                    //释放连接
+                    conn.release();
+                    //事件驱动回调
+                    callback(err,result);
+                });
+            }
         });
     },
 //查看公告
     view:function (data,callback) {
-           query("select b.title, b.content, b.push_time,  u.name  pusher from oa_bulletin b  left join  oa_user  u  on b.pusher_id=u.id   where b.is_del=0  and id=?  ", data, function (err, rows) {
-            callback(err, rows);
+        var sql="select b.title, b.content, b.push_time,  u.name  pusher from oa_bulletin b  left join  oa_user  u  on b.pusher_id=u.id   where b.is_del=0  and id=?  ";
+        query(function (err,conn) {
+            if(err){
+                callback(err,null,null);
+            }else{
+                conn.query(sql,data,function(err,result){
+                    //释放连接
+                    conn.release();
+                    //事件驱动回调
+                    callback(err,result);
+                });
+            }
         });
 
     }
