@@ -158,7 +158,7 @@ router.post("/update", function (req, res, next) {
             res.json(data);
             return;
         }
-        if(result.length){
+        if(result.length<=0){
             data.result=1;
             data.message={
                 result:"修改失败！",
@@ -169,7 +169,7 @@ router.post("/update", function (req, res, next) {
             return;
 
         }
-        roleDao.update([name,no,id],function (error,result) {
+        dutyDao.update([name,no,id],function (error,result) {
             if(error){
                 data.result=1;
                 data.message={

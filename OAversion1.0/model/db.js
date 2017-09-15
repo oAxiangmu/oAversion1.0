@@ -4,7 +4,7 @@ var conn = mysql.createConnection({
     user: 'root',
     password: '12345678',
     database: 'oa',
-    port: 3306
+    port: 3308
 });
 conn.connect();
 module.exports =conn;

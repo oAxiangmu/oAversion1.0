@@ -62,7 +62,7 @@ var duty={
             if(err){
                 callback(err,null,null);
             }else{
-                conn.query(sql,function(err,result){
+                conn.query(sql,data,function(err,result){
                     //释放连接
                     conn.release();
                     //事件驱动回调
@@ -79,7 +79,7 @@ var duty={
             if(err){
                 callback(err,null,null);
             }else{
-                conn.query(sql,function(err,result){
+                conn.query(sql,data,function(err,result){
                     //释放连接
                     conn.release();
                     //事件驱动回调
