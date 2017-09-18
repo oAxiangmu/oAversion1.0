@@ -16,13 +16,45 @@ var role={
            });
 
        },
+    //角色查看
+    view:function (data,callback) {
+        var sql1="select * from oa_role where is_del=0 and id=?";
+        query(function (err,conn) {
+            if(err){
+                callback(err,null,null);
+            }else{
+                conn.query(sql1, data,function(err,result){
+                    console.log(result)
+                    if(err){
+                        console.log(err);
+                    }
+
+                    var sql2="select name from oa_operation where id in ("+result[0].u_id+")";
+                    conn.query(sql2,function (err,result2) {
+                        //释放连接
+                        conn.release();
+                        //事件驱动回调
+                        result[0].operation=[];
+                        for(var i=0 ;i<result2.length;i++){
+                            result[0].operation.push(result2[i].name);
+                        }
+                        console.log(result);
+                        callback(err,result);
+                    })
+
+                });
+            }
+        });
+
+    },
+
 	//数据添加
 		add:function(data,callback){
             query(function (err,conn) {
                 if(err){
                     callback(err,null,null);
                 }else{
-                    conn.query("insert into oa_role (name,creat_time) values(?,now())",data,function(err,result){
+                    conn.query("insert into oa_role (name,ope_id,creat_time) values(?,?,now())",data,function(err,result){
                         //释放连接
                         conn.release();
                         //事件驱动回调

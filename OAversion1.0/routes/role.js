@@ -8,7 +8,9 @@ router.post("/add", function (req, res, next) {
     var data = {};//返回的数据
     var params={};
     name = req.body.name;
+    opeId=req.body.opeId;
     params.name=name;
+
 
 
     roleDao.isExesit(params, function (error, rows) {
@@ -24,7 +26,7 @@ router.post("/add", function (req, res, next) {
             return;
 
         }else{
-            roleDao.add(name, function (error, result) {
+            roleDao.add([name,opeId], function (error, result) {
 
                 if (error) {
                     data.result = 0;
@@ -103,7 +105,7 @@ router.get("/delet/:id", function (req, res, next) {
     })
 
 });
-//查找角色
+//查找列表
 router.get("/list/:page",function (req,res,next) {
 
     var data={};
@@ -134,6 +136,34 @@ router.get("/list/:page",function (req,res,next) {
 
    })
 });
+//角色查看
+router.get("/view/:id",function (req,res,next) {
+    var data = {};
+    var id = req.params.id;
+    roleDao.view(id, function (error, result) {
+
+        if (error) {
+            data.result = 0;
+            data.message = {
+                res: "角色查询失败",
+                detail: error,
+            };
+            data.data = null;
+            res.json(data);
+            return
+        }
+
+        data.result = 1;
+        data.message = {
+            res: "角色查询成功",
+            detail: "",
+        }
+        data.data = result;
+        res.json(data);
+
+    })
+});
+
 
 //角色修改
 
